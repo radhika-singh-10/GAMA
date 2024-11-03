@@ -17,7 +17,7 @@ import time
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-base_model = "/fs/nexus-projects/brain_project/acl_sk_24/GAMA//train_script/Llama-2-7b-chat-hf-qformer/"
+base_model = "/home/rsingh57/models/gama_checkpoints/Llama-2-7b-chat-hf-qformer/" # "/fs/nexus-projects/brain_project/acl_sk_24/GAMA//train_script/Llama-2-7b-chat-hf-qformer/"
 
 prompter = Prompter('alpaca_short')
 tokenizer = LlamaTokenizer.from_pretrained(base_model)
