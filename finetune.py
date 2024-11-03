@@ -90,12 +90,13 @@ def train(
     ), "Please specify a --base_model, e.g. --base_model='huggyllama/llama-7b'"
 
     # trick to load checkpoints correctly from HF
-    if '/fs/nexus-projects/brain_project/acl_sk_24/GAMA/src/Llama-2-7b-chat-hf-qformer' not in base_model:
+    #if '/fs/nexus-projects/brain_project/acl_sk_24/GAMA/src/Llama-2-7b-chat-hf-qformer' not in base_model:
+    if '/home/rsingh57/models/gama_checkpoints/Llama-2-7b-chat-hf-qformer' not in base_model:
         # start from a different model with original vicuna
         # temporally first load the original vicuna, then load the actual checkpoint
         start_model = base_model # need to point to a specific bin file that contains state dict.
         # TODO: change to your vicuna_tltr path
-        base_model = '/fs/nexus-projects/brain_project/acl_sk_24/GAMA/src/Llama-2-7b-chat-hf-qformer'
+        base_model = '/home/rsingh57/models/gama_checkpoints/Llama-2-7b-chat-hf-qformer'
         print('Will load from {:s} later, for implementation purpose, first load from {:s}'.format(start_model, base_model))
     else:
         start_model = None
