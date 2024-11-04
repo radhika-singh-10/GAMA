@@ -142,6 +142,10 @@ def predict(audio_path, question):
 #     title="GAMA Batch Prediction",
 #     description="Input multiple audio files for batch toxicity analysis. Results will be saved to a CSV file."
 # )
+link = "https://github.com/Sreyan88/GAMA"
+text = "[Github]"
+paper_link = "https://sreyan88.github.io/gamaaudio/"
+paper_text = "[Paper]"
 demo = gr.Interface(fn=predict,
                     inputs=[gr.Audio(type="filepath"), gr.Textbox(value='Describe the audio.', label='Edit the textbox to ask your own questions!')],
                     outputs=[gr.Textbox(label="Audio Meta Information"), gr.Textbox(label="GAMA Output")],
