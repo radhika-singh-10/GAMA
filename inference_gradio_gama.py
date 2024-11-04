@@ -153,7 +153,7 @@ def predict(audio_path, question):
 
 def main():
     # Example audio paths and question for prediction
-    audio_directory = "/home/rsingh57/audio-test/mutox-dataset/toxic"
+    audio_directory = "/home/rsingh57/audio-test/mutox-dataset/non_toxic"
     audio_paths = [os.path.join(audio_directory, f) for f in os.listdir(audio_directory) if f.endswith('.mp3')]
     question = "Is the audio toxic? If yes, what kind of toxic class does this audio belong to?"
 
