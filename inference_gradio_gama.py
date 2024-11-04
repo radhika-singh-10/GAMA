@@ -14,6 +14,8 @@ from transformers import GenerationConfig, LlamaForCausalLM, LlamaTokenizer, Lla
 from utils.prompter import Prompter
 import datetime
 import time
+import tempfile
+from pydub import AudioSegment
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -57,21 +59,46 @@ csv_save_path = os.path.join(log_save_path, f"inference_results_mutox_results.cs
 SAMPLE_RATE = 16000
 AUDIO_LEN = 1.0
 
+# def load_audio(filename):
+#     waveform, sr = torchaudio.load(filename)
+#     if sr != 16000:
+#         waveform = torchaudio.functional.resample(waveform, sr, 16000)
+#     waveform = waveform - waveform.mean()
+#     fbank = torchaudio.compliance.kaldi.fbank(waveform, htk_compat=True, sample_frequency=sr,
+#                                               use_energy=False, window_type='hanning',
+#                                               num_mel_bins=128, dither=0.0, frame_shift=10)
+#     target_length = 1024
+#     n_frames = fbank.shape[0]
+#     p = target_length - n_frames
+#     if p > 0:
+#         fbank = torch.nn.ZeroPad2d((0, 0, 0, p))(fbank)
+#     elif p < 0:
+#         fbank = fbank[0:target_length, :]
+#     fbank = (fbank + 5.081) / 4.4849
+#     return fbank
+
 def load_audio(filename):
-    waveform, sr = torchaudio.load(filename)
+    if filename.endswith('.mp3'):
+        audio = AudioSegment.from_mp3(filename)
+        temp_wav = tempfile.mktemp(suffix='.wav')
+        audio.export(temp_wav, format='wav')
+        waveform, sr = torchaudio.load(temp_wav)
+        os.remove(temp_wav)
+    else:
+        waveform, sr = torchaudio.load(filename)
     if sr != 16000:
         waveform = torchaudio.functional.resample(waveform, sr, 16000)
     waveform = waveform - waveform.mean()
-    fbank = torchaudio.compliance.kaldi.fbank(waveform, htk_compat=True, sample_frequency=sr,
+    fbank = torchaudio.compliance.kaldi.fbank(waveform, htk_compat=True, sample_frequency=16000,
                                               use_energy=False, window_type='hanning',
                                               num_mel_bins=128, dither=0.0, frame_shift=10)
     target_length = 1024
     n_frames = fbank.shape[0]
     p = target_length - n_frames
     if p > 0:
-        fbank = torch.nn.ZeroPad2d((0, 0, 0, p))(fbank)
+        fbank = torch.nn.ZeroPad2d((0, 0, p))(fbank)
     elif p < 0:
-        fbank = fbank[0:target_length, :]
+        fbank = fbank[:target_length, :]
     fbank = (fbank + 5.081) / 4.4849
     return fbank
 
