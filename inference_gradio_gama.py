@@ -123,10 +123,32 @@ def predict(audio_path, question):
     return audio_path, output
 
 # GUI for multiple files
-demo = gr.Interface(fn=predict_multiple,
-                    inputs=[gr.File(file_count="multiple", type="/home/rsingh57/audio-test/mutox-dataset/toxic/"), gr.Textbox(default="Is the audio toxic? If yes, what kind of toxic class does this audio belong to?")],
-                    outputs=[gr.File(label="CSV Results")],
+# demo = gr.Interface(fn=predict_multiple,
+#                     inputs=[
+#                         gr.File(file_count="multiple", type="/home/rsingh57/audio-test/mutox-dataset/toxic/"), 
+#                             gr.Textbox(default="Is the audio toxic? If yes, what kind of toxic class does this audio belong to?")],
+#                     outputs=[gr.File(label="CSV Results")],
+#                     cache_examples=True,
+#                     title="GAMA Batch Prediction",
+#                     description="Input multiple audio files for batch toxicity analysis. Results will be saved to a CSV file.")
+# demo = gr.Interface(
+#     fn=predict_multiple,
+#     inputs=[
+#         gr.File(file_count="multiple", type="file"),
+#         gr.Textbox(default="Is the audio toxic? If yes, what kind of toxic class does this audio belong to?")
+#     ],
+#     outputs=[gr.File(label="CSV Results")],
+#     cache_examples=True,
+#     title="GAMA Batch Prediction",
+#     description="Input multiple audio files for batch toxicity analysis. Results will be saved to a CSV file."
+# )
+demo = gr.Interface(fn=predict,
+                    inputs=[gr.Audio(type="filepath"), gr.Textbox(value='Describe the audio.', label='Edit the textbox to ask your own questions!')],
+                    outputs=[gr.Textbox(label="Audio Meta Information"), gr.Textbox(label="GAMA Output")],
                     cache_examples=True,
-                    title="GAMA Batch Prediction",
-                    description="Input multiple audio files for batch toxicity analysis. Results will be saved to a CSV file.")
+                    title="Quick Demo of GAMA",
+                    description="GAMA is a novel Large Large Audio-Language Model that is capable of understanding audio inputs and answer any open-ended question about it." + f"<a href='{paper_link}'>{paper_text}</a> " + f"<a href='{link}'>{text}</a> <br>" +
+                    "GAMA is authored by members of the GAMMA Lab at the University of Maryland, College Park and Adobe, USA. <br>" +
+                    "**GAMA is not an ASR model and has limited ability to recognize the speech content. It primarily focuses on perception and understanding of non-speech sounds.**<br>" +
+                    "Input an audio and ask quesions! Audio will be converted to 16kHz and padded or trim to 10 seconds.")
 demo.launch(debug=True, share=True)
