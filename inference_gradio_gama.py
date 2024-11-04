@@ -122,6 +122,18 @@ def predict(audio_path, question):
     output = tokenizer.decode(s)[len(prompt)+6:-4] # trim <s> and </s>
     return audio_path, output
 
+def main():
+    # Example audio paths and question for prediction
+    audio_directory = "/home/rsingh57/audio-test/mutox-dataset/toxic"
+    audio_paths = [os.path.join(audio_directory, f) for f in os.listdir(audio_directory) if f.endswith('.mp3')]
+    question = "Is the audio toxic? If yes, what kind of toxic class does this audio belong to?"
+
+    # Call the predict_multiple function to process audio files and save results to CSV
+    predict_multiple(audio_paths, question)
+
+if __name__ == "__main__":
+    main()
+
 # GUI for multiple files
 # demo = gr.Interface(fn=predict_multiple,
 #                     inputs=[
