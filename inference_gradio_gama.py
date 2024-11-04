@@ -95,8 +95,10 @@ def load_audio(filename):
     target_length = 1024
     n_frames = fbank.shape[0]
     p = target_length - n_frames
+    if p % 2 != 0:
+        p += 1  
     if p > 0:
-        fbank = torch.nn.ZeroPad2d((0, 0, p))(fbank)
+        fbank = torch.nn.ZeroPad2d((0, 0, 0, p))(fbank)
     elif p < 0:
         fbank = fbank[:target_length, :]
     fbank = (fbank + 5.081) / 4.4849
