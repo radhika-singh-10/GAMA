@@ -106,12 +106,25 @@ def load_audio(filename):
 
 def predict_multiple(audio_paths, question):
     print(csv_save_path)
+    existing_files = set()
+    if os.path.exists(csv_save_path):
+        with open(csv_save_path, mode='r') as file:
+            reader = csv.reader(file)
+            next(reader, None)  
+            for row in reader:
+                if row:
+                    existing_files.add(row[0]) 
+
     with open(csv_save_path, mode='a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(["Audio File", "Precition"])
-        
+        # writer.writerow(["Audio File", "Prediction"])
+
         for audio_path in audio_paths:
-            print(audio_path)
+            if audio_path in existing_files:
+                print(f"Skipping {audio_path}, already processed.")
+                continue
+
+            print(f"Processing {audio_path}")
             audio_info, output = predict(audio_path, question)
             writer.writerow([audio_path, output])
 
