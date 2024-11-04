@@ -36,7 +36,8 @@ config = LoraConfig(
 model = get_peft_model(model, config)
 temp, top_p, top_k = 0.1, 0.95, 500
 
-eval_mdl_path = '/fs/gamma-projects/audio/gama/new_data/stage4_all_mix_new/checkpoint-46800/pytorch_model.bin'
+eval_mdl_path = '/home/rsingh57/models/gama_checkpoints/checkpoint-2500/pytorch_model.bin' 
+# '/fs/gamma-projects/audio/gama/new_data/stage4_all_mix_new/checkpoint-46800/pytorch_model.bin'
 state_dict = torch.load(eval_mdl_path, map_location='cpu')
 msg = model.load_state_dict(state_dict, strict=False)
 
