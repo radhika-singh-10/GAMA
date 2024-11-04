@@ -54,7 +54,7 @@ cur_time = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 log_save_path = './inference_log/'
 if not os.path.exists(log_save_path):
     os.mkdir(log_save_path)
-csv_save_path = os.path.join(log_save_path, f"inference_results_mutox_results.csv")
+csv_save_path = os.path.join(log_save_path, f"inference_results_mutox_results_non_toxic.csv")
 
 SAMPLE_RATE = 16000
 AUDIO_LEN = 1.0
@@ -105,11 +105,13 @@ def load_audio(filename):
     return fbank
 
 def predict_multiple(audio_paths, question):
+    print(csv_save_path)
     with open(csv_save_path, mode='a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(["Audio File", "Precition"])
         
         for audio_path in audio_paths:
+            print(audio_path)
             audio_info, output = predict(audio_path, question)
             writer.writerow([audio_path, output])
 
