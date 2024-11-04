@@ -124,7 +124,7 @@ def predict(audio_path, question):
 
 # GUI for multiple files
 demo = gr.Interface(fn=predict_multiple,
-                    inputs=[gr.File(file_count="multiple", type="./audio-test/mutox-dataset/toxic"), gr.Textbox(default="Is the audio toxic?")],
+                    inputs=[gr.File(file_count="multiple", type="/home/rsingh57/audio-test/mutox-dataset/toxic"), gr.Textbox(default="Is the audio toxic? If yes, what kind of toxic class does this audio belong to?")],
                     outputs=[gr.File(label="CSV Results")],
                     cache_examples=True,
                     title="GAMA Batch Prediction",
